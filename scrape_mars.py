@@ -37,7 +37,8 @@ def scrape():
     # Mars Facts
     url = 'https://space-facts.com/mars/'
     tables = pd.read_html(url)
-    scraping_results['mars_facts'] = tables[0]
+    mars_facts_html = tables[0].to_html()
+    scraping_results['mars_facts'] = mars_facts_html
 
     # Mars Hemispheres
     hemispheres = []
@@ -63,6 +64,3 @@ def scrape():
     scraping_results['hemispheres'] = hemispheres
     browser.quit()
     return scraping_results
-
-results = scrape()
-print(results)
