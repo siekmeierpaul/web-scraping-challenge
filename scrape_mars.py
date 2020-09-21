@@ -18,7 +18,7 @@ def scrape():
     first_item = soup.find('div', class_='list_text')
     first_headline = first_item.find('div', class_='content_title')
     news_title = first_headline.text.strip()
-    scraping_results['news-title'] = news_title
+    scraping_results['news_title'] = news_title
     first_content = first_item.find('div', class_='article_teaser_body')
     news_p = first_content.text.strip()
     scraping_results['news_p'] = news_p
@@ -31,13 +31,16 @@ def scrape():
     html = browser.html
     jpl_soup = BeautifulSoup(html, 'html.parser')
     links = jpl_soup.find_all('div', class_='download_tiff')
-    featured_image_url = 'http' + links[1].a.get('href')
+    featured_image_url = 'http:' + links[1].a.get('href')
     scraping_results['featured_image_url'] = featured_image_url
 
     # Mars Facts
     url = 'https://space-facts.com/mars/'
     tables = pd.read_html(url)
-    mars_facts_html = tables[0].to_html()
+    mars_df = tables[0]
+    mars_df.columns = ['Description', 'Mars']
+    mars_df.set_index('Description', inplace=True)
+    mars_facts_html = mars_df.to_html()
     scraping_results['mars_facts'] = mars_facts_html
 
     # Mars Hemispheres
